@@ -18,14 +18,23 @@ import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.byandrev.habito.R
+import dev.byandrev.habito.ui.AppViewModelProvider
+import dev.byandrev.habito.ui.components.FormTask
+import dev.byandrev.habito.viewmodel.TaskViewModel
+import kotlinx.coroutines.launch
 
 // TODO: create file
 data class Task(
@@ -36,8 +45,14 @@ data class Task(
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TasksScreen() {
-    var countCompleted = remember { mutableStateOf(0) }
+fun TasksScreen(
+    viewModel: TaskViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val openAlertDialog = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val tasks by viewModel.tasks.collectAsState()
+
+    val countCompleted = remember { mutableIntStateOf(0) }
     val tasksState = remember { mutableStateListOf(
         Task("Estudiar Kotlin", false),
         Task("Hacer ejercicio", true),
@@ -48,7 +63,7 @@ fun TasksScreen() {
         modifier = Modifier.fillMaxSize().padding(20.dp),
         floatingActionButton = {
             LargeFloatingActionButton(
-                onClick = { onClick() },
+                onClick = { openAlertDialog.value = true },
                 shape = CircleShape,
                 modifier = Modifier.size(60.dp).absoluteOffset(y = (50).dp)
             ) {
@@ -59,9 +74,29 @@ fun TasksScreen() {
     ) {
         Column() {
             Text(text = stringResource(R.string.tasks), modifier = Modifier.padding(bottom = 20.dp))
-            Text(text = countCompleted.value.toString())
+//            Text(text = countCompleted.value.toString())
 
-            tasksState.forEachIndexed { index, task ->
+            when {
+                openAlertDialog.value -> {
+                    FormTask(
+                        onDismissRequest = { openAlertDialog.value = false },
+                        onConfirmation = {
+                            value ->
+                            openAlertDialog.value = false
+
+                            val task = Task(name = value, checked = false)
+                            tasksState.add(task)
+
+                            scope.launch {
+                                viewModel.addTask(name = task.name, checked = task.checked)
+                            }
+                        },
+                        dialogTitle = stringResource(R.string.add_task)
+                    )
+                }
+            }
+
+            tasks.forEach { task ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -70,7 +105,6 @@ fun TasksScreen() {
                         checked = task.checked,
                         onCheckedChange = {  isChecked ->
                             countCompleted.value = countCompleted.value + 1
-                            tasksState[index].checked = isChecked
                         }
                     )
 
@@ -80,5 +114,3 @@ fun TasksScreen() {
         }
     }
 }
-
-fun onClick() {}
