@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,8 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +34,8 @@ import dev.byandrev.habito.ui.AppViewModelProvider
 import dev.byandrev.habito.ui.components.FormTask
 import dev.byandrev.habito.viewmodel.TaskViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.lazy.items
+import dev.byandrev.habito.ui.components.TabsTasks
 
 // TODO: create file
 data class Task(
@@ -52,13 +53,6 @@ fun TasksScreen(
     val scope = rememberCoroutineScope()
     val tasks by viewModel.tasks.collectAsState()
 
-    val countCompleted = remember { mutableIntStateOf(0) }
-    val tasksState = remember { mutableStateListOf(
-        Task("Estudiar Kotlin", false),
-        Task("Hacer ejercicio", true),
-        Task("Leer un libro", false))
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         floatingActionButton = {
@@ -73,9 +67,6 @@ fun TasksScreen(
         floatingActionButtonPosition = FabPosition.EndOverlay
     ) {
         Column() {
-            Text(text = stringResource(R.string.tasks), modifier = Modifier.padding(bottom = 20.dp))
-//            Text(text = countCompleted.value.toString())
-
             when {
                 openAlertDialog.value -> {
                     FormTask(
@@ -85,7 +76,6 @@ fun TasksScreen(
                             openAlertDialog.value = false
 
                             val task = Task(name = value, checked = false)
-                            tasksState.add(task)
 
                             scope.launch {
                                 viewModel.addTask(name = task.name, checked = task.checked)
@@ -96,19 +86,38 @@ fun TasksScreen(
                 }
             }
 
-            tasks.forEach { task ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = task.checked,
-                        onCheckedChange = {  isChecked ->
-                            countCompleted.value = countCompleted.value + 1
-                        }
-                    )
+            TabsTasks(
+                onChangeTab = { tab ->
+                    var isChecked: Boolean? = null
 
-                    Text(text = task.name)
+                    if (tab == "completed") isChecked = true
+                    if (tab == "todo") isChecked = false
+
+                    scope.launch {
+                        viewModel.setFilter(isChecked)
+                    }
+                }
+            )
+
+            LazyColumn (modifier = Modifier.padding(top = 20.dp)) {
+                items(tasks) { task ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = task.checked,
+                            onCheckedChange = {  isChecked ->
+                                scope.launch {
+                                    val taskUpdated = task.copy()
+                                    taskUpdated.checked = isChecked
+                                    viewModel.updateTask(taskUpdated)
+                                }
+                            }
+                        )
+
+                        Text(text = task.name)
+                    }
                 }
             }
         }
