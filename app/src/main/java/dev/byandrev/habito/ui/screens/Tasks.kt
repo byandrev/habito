@@ -1,6 +1,8 @@
 package dev.byandrev.habito.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
@@ -35,14 +37,14 @@ import dev.byandrev.habito.ui.components.FormTask
 import dev.byandrev.habito.viewmodel.TaskViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.unit.sp
+import dev.byandrev.habito.data.Converters
+import dev.byandrev.habito.data.Task
 import dev.byandrev.habito.ui.components.TabsTasks
-
-// TODO: create file
-data class Task(
-    val name: String,
-    var checked: Boolean
-)
-
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -52,6 +54,9 @@ fun TasksScreen(
     val openAlertDialog = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val tasks by viewModel.tasks.collectAsState()
+    val formatter = remember {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize().padding(20.dp),
@@ -72,13 +77,18 @@ fun TasksScreen(
                     FormTask(
                         onDismissRequest = { openAlertDialog.value = false },
                         onConfirmation = {
-                            value ->
+                            textInput, inputDescription, date ->
                             openAlertDialog.value = false
 
-                            val task = Task(name = value, checked = false)
+                            val task = Task(
+                                name = textInput,
+                                description = inputDescription,
+                                date = date,
+                                checked = false
+                            )
 
                             scope.launch {
-                                viewModel.addTask(name = task.name, checked = task.checked)
+                                viewModel.addTask(task)
                             }
                         },
                         dialogTitle = stringResource(R.string.add_task)
@@ -107,7 +117,7 @@ fun TasksScreen(
                     ) {
                         Checkbox(
                             checked = task.checked,
-                            onCheckedChange = {  isChecked ->
+                            onCheckedChange = { isChecked ->
                                 scope.launch {
                                     val taskUpdated = task.copy()
                                     taskUpdated.checked = isChecked
@@ -116,7 +126,21 @@ fun TasksScreen(
                             }
                         )
 
-                        Text(text = task.name)
+                        Row (
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = task.name)
+
+                            task.date?.let { date ->
+                                Text(
+                                    text = date.format(formatter),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     }
                 }
             }

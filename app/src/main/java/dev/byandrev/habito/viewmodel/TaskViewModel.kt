@@ -35,10 +35,9 @@ class TaskViewModel(private val tasksRepository: TasksRepository) : ViewModel() 
         _filter.value = isChecked
     }
 
-    fun addTask(name: String, checked: Boolean) {
+    fun addTask(task: Task) {
         viewModelScope.launch {
-            val newTask = Task(name = name, checked = checked)
-            tasksRepository.insertTask(newTask)
+            tasksRepository.insertTask(task)
         }
     }
 
