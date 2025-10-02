@@ -15,3 +15,5 @@
 local.properties
 /app/release
 key.jks
+
+/app/google-services.json
