@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import dev.byandrev.habito.ui.components.NavigationBar
+import dev.byandrev.habito.ui.screens.LoadingScreen
 import dev.byandrev.habito.ui.screens.LoginScreen
 import dev.byandrev.habito.ui.theme.HabitoTheme
 import dev.byandrev.habito.viewmodel.AuthState
@@ -46,7 +47,7 @@ fun App(viewModel: AuthViewModel = viewModel()) {
         }
 
         is AuthState.Loading -> {
-            CircularProgressIndicator()
+            LoadingScreen()
         }
 
         is AuthState.Idle -> {
