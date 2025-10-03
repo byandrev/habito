@@ -45,6 +45,7 @@ class AuthViewModel : ViewModel() {
     }
 
     init {
+        _authState.value = AuthState.Loading
         auth.addAuthStateListener(authStateListener)
     }
 
