@@ -15,9 +15,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoadingScreen() {
     Surface(
-        modifier = Modifier.padding(20.dp)
-            .fillMaxWidth()
-            .fillMaxHeight()
+        modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
