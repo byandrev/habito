@@ -1,6 +1,5 @@
 package dev.byandrev.habito.ui.screens
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.byandrev.habito.ui.components.Logo
@@ -28,9 +26,7 @@ fun LoginScreen(authViewModel: AuthViewModel = viewModel()) {
     val inputPassword = remember { mutableStateOf("") }
 
     Surface(
-        modifier = Modifier.padding(20.dp)
-            .fillMaxWidth()
-            .fillMaxHeight()
+        modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
         Column(
             verticalArrangement = Arrangement.Center
