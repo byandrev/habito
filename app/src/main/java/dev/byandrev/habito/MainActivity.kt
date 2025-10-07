@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            HabitoTheme {
+            HabitoTheme(dynamicColor = false) {
                 App()
             }
         }

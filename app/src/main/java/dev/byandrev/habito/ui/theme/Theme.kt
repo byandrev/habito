@@ -12,6 +12,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 
@@ -21,25 +22,35 @@ internal const val COMPACT_SCREEN_WIDTH = 600
 internal const val MEDIUM_SCREEN_WIDTH = 839
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = BluePrimaryDark,
+    onPrimary = Color.Black,
+    primaryContainer = BlueLightDark,
+
+    background = SurfaceDark,
+    surface = SurfaceDark,
+    surfaceContainerHighest = OutlineDark,
+    onBackground = TextLight,
+    onSurface = TextLight,
+    outline = OutlineDark,
+
+    error = RedErrorDark,
+    onError = Color.Black
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = BluePrimary,
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primaryContainer = BlueLight,
+
+    background = SurfaceLight,
+    surface = SurfaceLight,
+    surfaceContainerHighest = OutlineLight,
+    onBackground = TextDark,
+    onSurface = TextDark,
+    outline = OutlineLight,
+
+    error = RedError,
+    onError = Color.White
 )
 
 @Composable
