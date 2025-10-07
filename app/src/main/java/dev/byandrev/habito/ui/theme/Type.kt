@@ -27,6 +27,10 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     ),
 
+    bodyMedium = TextStyle(
+        fontFamily = Manrope,
+    ),
+
     titleLarge = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold,

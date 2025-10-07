@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,30 +35,61 @@ fun HabitsList(habits: List<Habit>) {
     ) {
         habits.forEach { habit ->
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = HabitoTheme.dimens.paddingLarge, vertical = HabitoTheme.dimens.paddingNormal),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HabitoTheme.dimens.spacerMedium)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = HabitoTheme.dimens.paddingLarge, vertical = HabitoTheme.dimens.paddingNormal),
+                horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.spacedBy(HabitoTheme.dimens.spacerMedium)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .size(HabitoTheme.dimens.iconSizeMedium)
+                            .clip(RoundedCornerShape(HabitoTheme.dimens.roundedShapeNormal))
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Habit icon",
+                            modifier = Modifier.padding(HabitoTheme.dimens.paddingNormal),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    Column {
+                        Text(
+                            text = habit.name,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+
+                        habit.description?.let {
+                            Text(
+                                text = it,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                }
+
+                IconButton(
+                    onClick = {},
                     modifier = Modifier
                         .size(HabitoTheme.dimens.iconSizeMedium)
-                        .clip(RoundedCornerShape(HabitoTheme.dimens.roundedShapeNormal))
+                        .clip(RoundedCornerShape(HabitoTheme.dimens.iconSizeMedium))
                         .background(MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Habit icon",
+                        imageVector = Icons.Outlined.Check,
+                        contentDescription = "Check icon",
                         modifier = Modifier.padding(HabitoTheme.dimens.paddingNormal),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
-
-                Text(
-                    text = habit.name,
-                    fontWeight = FontWeight.SemiBold,
-                )
             }
 
             HorizontalDivider(
