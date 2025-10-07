@@ -3,9 +3,7 @@ package dev.byandrev.habito.ui.components
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -22,15 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.byandrev.habito.ui.screens.HomeScreen
-import dev.byandrev.habito.ui.screens.LoginScreen
 import dev.byandrev.habito.ui.screens.SettingsScreen
 import dev.byandrev.habito.ui.screens.TasksScreen
-import dev.byandrev.habito.viewmodel.AuthViewModel
 
 enum class Destination(
     val route: String,
@@ -46,7 +41,7 @@ enum class Destination(
 @SuppressLint("ViewModelConstructorInComposable")
 @Preview()
 @Composable
-fun NavigationBar(authViewModel: AuthViewModel = viewModel()) {
+fun NavigationBar() {
     val navController = rememberNavController()
     val startDestination = Destination.HOME
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
