@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
@@ -37,7 +38,7 @@ enum class Destination(
     val icon: ImageVector,
     val contentDescription: String
 ) {
-    HOME("home", "Home", Icons.Default.Home, "Home"),
+    HOME("habits", "Habits", Icons.Default.DateRange, "Habits"),
     TASKS("tasks", "Tasks", Icons.Default.List, "Tasks"),
     SETTINGS("settings", "Settings", Icons.Default.Settings, "Settings"),
 }
