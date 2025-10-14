@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.byandrev.habito.ui.screens.HomeScreen
+import dev.byandrev.habito.ui.screens.NewHabitScreen
 import dev.byandrev.habito.ui.screens.SettingsScreen
 import dev.byandrev.habito.ui.screens.TasksScreen
 
@@ -44,19 +47,20 @@ enum class Destination(
     HOME("habits", "Habits", Icons.Default.DateRange, "Habits"),
     TASKS("tasks", "Tasks", Icons.Default.List, "Tasks"),
     SETTINGS("settings", "Settings", Icons.Default.Settings, "Settings"),
+    NEW_HABIT("newHabit", "New habit", Icons.Default.Add, "New habit"),
 }
 
-@SuppressLint("ViewModelConstructorInComposable")
+@SuppressLint("ViewModelConstructorInComposable", "UnusedMaterial3ScaffoldPaddingParameter")
 @Preview()
 @Composable
 fun NavigationBar() {
     val navController = rememberNavController()
     val startDestination = Destination.HOME
-    var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+    var selectedDestination by rememberSaveable { mutableStateOf(startDestination.route) }
 
     Scaffold(
         topBar = {
-            Header()
+            DynamicTopBar(navController = navController)
         },
         bottomBar = {
             Column() {
@@ -69,12 +73,12 @@ fun NavigationBar() {
                     windowInsets = NavigationBarDefaults.windowInsets,
                     containerColor = MaterialTheme.colorScheme.background
                 ) {
-                    Destination.entries.forEachIndexed { index, destination ->
+                    Destination.entries.filter { it != Destination.NEW_HABIT }.forEach { destination ->
                         NavigationBarItem(
-                            selected = selectedDestination == index,
+                            selected = selectedDestination == destination.route,
                             onClick = {
                                 navController.navigate(route = destination.route)
-                                selectedDestination = index
+                                selectedDestination = destination.route
                             },
                             icon = {
                                 Icon(
@@ -105,6 +109,9 @@ fun NavigationBar() {
         }
         composable(route = Destination.SETTINGS.route) {
             SettingsScreen()
+        }
+        composable(route = Destination.NEW_HABIT.route) {
+            NewHabitScreen()
         }
     }
     }
