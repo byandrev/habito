@@ -17,7 +17,7 @@ data class Habit(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val description: String? = null,
-    val schedule: Set<DayOfWeek>,
+//    val schedule: Set<DayOfWeek>,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP") var createdAt: Long? = System.currentTimeMillis(),
     @ColumnInfo(name = "updated_at", defaultValue = "CURRENT_TIMESTAMP") var updatedAt: Long? = System.currentTimeMillis()
 )
@@ -29,7 +29,8 @@ data class HabitCompletion(
 
 // TODO: create file
 fun isHabitDueToday(habit: Habit, currentDate: LocalDate): Boolean {
-    return habit.schedule.contains(currentDate.dayOfWeek)
+//    return habit.schedule.contains(currentDate.dayOfWeek)
+    return true
 }
 
 // TODO: create file
