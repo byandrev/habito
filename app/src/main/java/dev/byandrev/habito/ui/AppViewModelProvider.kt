@@ -11,6 +11,7 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             TaskViewModel(habitoApplication().container.tasksRepository)
+            TaskViewModel(habitoApplication().container.tasksRepository)
         }
     }
 }
