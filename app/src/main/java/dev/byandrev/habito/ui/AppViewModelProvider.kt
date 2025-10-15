@@ -6,12 +6,16 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import dev.byandrev.habito.HabitoApplication
 import dev.byandrev.habito.viewmodel.TaskViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import dev.byandrev.habito.viewmodel.HabitViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             TaskViewModel(habitoApplication().container.tasksRepository)
-            TaskViewModel(habitoApplication().container.tasksRepository)
+        }
+
+        initializer {
+            HabitViewModel(habitoApplication().container.habitsRepository)
         }
     }
 }

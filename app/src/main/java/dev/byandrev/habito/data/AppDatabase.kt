@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.byandrev.habito.data.dao.HabitDao
 
-@Database(entities = [Task::class], version = 2)
+@Database(entities = [Task::class, Habit::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
