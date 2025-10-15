@@ -5,14 +5,14 @@ import dev.byandrev.habito.data.dao.HabitDao
 import kotlinx.coroutines.flow.Flow
 
 interface HabitsRepository {
-    fun getAllTasksStream(): Flow<List<Habit>>
-    suspend fun insertTask(habit: Habit)
-    suspend fun updateTask(habit: Habit)
+    fun getAllHabitsStream(): Flow<List<Habit>>
+    suspend fun insertHabit(habit: Habit)
+    suspend fun updateHabit(habit: Habit)
 }
 
 
 class OfflineHabitsRepository(private val habitDao: HabitDao) : HabitsRepository {
-    override fun getAllTasksStream(): Flow<List<Habit>> = habitDao.getAllHabits()
-    override suspend fun insertTask(habit: Habit) = habitDao.insert(habit)
-    override suspend fun updateTask(habit: Habit) = habitDao.update(habit)
+    override fun getAllHabitsStream(): Flow<List<Habit>> = habitDao.getAllHabits()
+    override suspend fun insertHabit(habit: Habit) = habitDao.insert(habit)
+    override suspend fun updateHabit(habit: Habit) = habitDao.update(habit)
 }
