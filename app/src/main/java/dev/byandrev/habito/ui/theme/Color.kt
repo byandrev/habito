@@ -8,7 +8,7 @@ val BlueLight = Color(0xFFE8F0FE)
 val TextDark = Color(0xFF212121)
 val TextMedium = Color(0xFF616161)
 val SurfaceLight = Color(0xFFFFFFFF)
-val OutlineLight = Color(0xFFF2F2F2)
+val OutlineLight = Color(0xFFE1DFDF)
 val RedError = Color(0xFFEA4335)
 
 val BluePrimaryDark = Color(0xFF8AB4F8)
