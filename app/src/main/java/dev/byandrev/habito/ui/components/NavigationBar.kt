@@ -110,7 +110,7 @@ fun NavigationBar() {
             SettingsScreen()
         }
         composable(route = Destination.NEW_HABIT.route) {
-            NewHabitScreen()
+            NewHabitScreen(navController = navController)
         }
     }
     }

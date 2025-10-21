@@ -2,6 +2,7 @@ package dev.byandrev.habito.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,12 +66,14 @@ fun HabitItem(
                     .clip(RoundedCornerShape(HabitoTheme.dimens.roundedShapeNormal))
                     .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Star,
-                    contentDescription = "Habit icon",
+                Box(
                     modifier = Modifier.padding(HabitoTheme.dimens.paddingNormal),
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                ) {
+                    Text(
+                        text = habit.icon,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
             Column {
@@ -80,13 +83,14 @@ fun HabitItem(
                     style = MaterialTheme.typography.bodyMedium
                 )
 
+                /*
                 habit.description?.let {
                     Text(
                         text = it,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                }
+                }*/
 
                 Row(
                     modifier = Modifier.padding(top = HabitoTheme.dimens.spacerNormal),

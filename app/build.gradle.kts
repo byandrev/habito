@@ -42,9 +42,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.auth)
     val nav_version = "2.9.3"
     val room_version = "2.7.2"
 
@@ -61,6 +58,10 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -6,20 +6,12 @@ import androidx.room.PrimaryKey
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-/**
- * Habit structure
- * @param id
- * @param name Habit name.
- * @param schedule Day of week.
- */
-@Entity(tableName = "habits")
+@Entity
 data class Habit(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val name: String,
-    val description: String? = null,
-//    val schedule: Set<DayOfWeek>,
-    @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP") var createdAt: Long? = System.currentTimeMillis(),
-    @ColumnInfo(name = "updated_at", defaultValue = "CURRENT_TIMESTAMP") var updatedAt: Long? = System.currentTimeMillis()
+    val name: String = "",
+    val description: String? = "",
+    val icon: String = ""
 )
 
 data class HabitCompletion(

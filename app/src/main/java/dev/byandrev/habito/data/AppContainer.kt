@@ -1,8 +1,8 @@
 package dev.byandrev.habito.data
 
 import android.content.Context
+import com.google.firebase.database.FirebaseDatabase
 import dev.byandrev.habito.data.repositories.HabitsRepository
-import dev.byandrev.habito.data.repositories.OfflineHabitsRepository
 import dev.byandrev.habito.data.repositories.OfflineTasksRepository
 import dev.byandrev.habito.data.repositories.TasksRepository
 
@@ -17,6 +17,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
     }
 
     override val habitsRepository: HabitsRepository by lazy {
-        OfflineHabitsRepository(AppDatabase.getDatabase(context).habitDao())
+        HabitsRepository(FirebaseDatabase.getInstance())
     }
 }
