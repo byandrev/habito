@@ -1,6 +1,8 @@
 package dev.byandrev.habito.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,6 +27,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +58,10 @@ fun NewHabitScreen(
     val frequency = remember { mutableStateListOf(false, false, false, false, false, false, false) }
     val namesDaysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val options = listOf("📕", "🍎", "🏀", "💵", "🛒", "🏢")
+
+
     val currentTime = Calendar.getInstance()
 
     val timePickerState = rememberTimePickerState(
@@ -62,40 +74,15 @@ fun NewHabitScreen(
         modifier = Modifier.padding(20.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth().padding(bottom = HabitoTheme.dimens.paddingMedium),
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Habit name") }
             )
 
             Text(
-                modifier = Modifier.padding(vertical = HabitoTheme.dimens.paddingMedium),
-                text = "Frequency",
-                fontWeight = FontWeight.Bold
-            )
-
-            Column (
-                verticalArrangement = Arrangement.spacedBy(HabitoTheme.dimens.paddingNormal),
-                modifier = Modifier.padding(bottom = HabitoTheme.dimens.paddingLarge)
-            ) {
-                CustomButton(
-                    onTap = {},
-                    text = "Daily",
-                    textColor = MaterialTheme.colorScheme.surface,
-                    buttonColor = MaterialTheme.colorScheme.primary,
-                )
-
-                CustomButton(
-                    onTap = {},
-                    text = "Specific days",
-                    textColor = MaterialTheme.colorScheme.primary,
-                    buttonColor = MaterialTheme.colorScheme.surfaceDim,
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(bottom = HabitoTheme.dimens.paddingMedium),
+                modifier = Modifier.padding(bottom = HabitoTheme.dimens.paddingNormal),
                 text = "Reminder",
                 fontWeight = FontWeight.Bold
             )
@@ -104,26 +91,26 @@ fun NewHabitScreen(
                 modifier = Modifier.clickable {
                     isDialogTimeOpen = true
                 }
+                    .padding(bottom = HabitoTheme.dimens.paddingNormal)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(HabitoTheme.dimens.buttonHeightNormal)
-                        .clip(RoundedCornerShape(HabitoTheme.dimens.roundedShapeNormal))
-                        .background(MaterialTheme.colorScheme.surfaceDim)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = RoundedCornerShape(HabitoTheme.dimens.roundedShapeNormal)
+                        )
                         .padding(HabitoTheme.dimens.paddingMedium),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "Time",
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = "" + timePickerState.hour + ":" + timePickerState.minute,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -157,6 +144,28 @@ fun NewHabitScreen(
                         }
                     }
                 )
+            }
+
+            Text(
+                modifier = Modifier.padding(bottom = HabitoTheme.dimens.paddingNormal),
+                text = "Customize",
+                fontWeight = FontWeight.Bold
+            )
+
+            SingleChoiceSegmentedButtonRow (
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                options.forEachIndexed { index, label ->
+                    SegmentedButton(
+                        shape = SegmentedButtonDefaults.itemShape(
+                            index = index,
+                            count = options.size
+                        ),
+                        onClick = { selectedIndex = index },
+                        selected = index == selectedIndex,
+                        label = { Text(label) }
+                    )
+                }
             }
 
             Column (
